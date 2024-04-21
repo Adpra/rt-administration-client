@@ -13,7 +13,9 @@ export interface TextAreaProps {
     | "negative"
     | "ghost"
     | "accent"
-    | "bordered";
+    | "bordered"
+    | "accent"
+    | "danger";
   className?: string;
   disabled?: boolean;
   id?: string;
@@ -22,6 +24,7 @@ export interface TextAreaProps {
   isError?: boolean;
   value?: any;
   onChange?: (e: any) => void;
+  readOnly?: boolean;
 }
 
 const DEFAULT_SIZE = "sm";
@@ -39,6 +42,7 @@ const TextArea = (props: TextAreaProps) => {
     onChange,
     onKeyDown,
     value,
+    readOnly,
   } = props;
 
   const sizeClass = styles[size ?? DEFAULT_SIZE];
@@ -54,6 +58,7 @@ const TextArea = (props: TextAreaProps) => {
         onKeyDown={onKeyDown}
         placeholder={placeholder}
         value={value}
+        readOnly={readOnly}
       ></textarea>
     </div>
   );
@@ -76,6 +81,7 @@ const styles = {
   ghost: "textarea-ghost",
   bordered: "textarea-bordered",
   accent: "textarea-accent",
+  danger: "textarea-error",
 };
 
 export default TextArea;

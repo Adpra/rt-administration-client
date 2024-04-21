@@ -1,26 +1,26 @@
 import Swal, { SweetAlertIcon, SweetAlertPosition } from "sweetalert2";
 
-// export const imageToBase64 = (file?: any) => {
-//   return new Promise((resolve, reject) => {
-//     if (!file) {
-//       reject("No file provided");
-//       return;
-//     }
+export const imageToBase64 = (file?: any) => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      reject("No file provided");
+      return;
+    }
 
-//     const reader = new FileReader();
+    const reader = new FileReader();
 
-//     reader.onload = function (event) {
-//       const base64 = event.target.result;
-//       resolve(base64);
-//     };
+    reader.onload = function (event: any) {
+      const base64 = event.target.result;
+      resolve(base64);
+    };
 
-//     reader.onerror = function (event) {
-//       reject("Error reading file");
-//     };
+    reader.onerror = function (event) {
+      reject("Error reading file");
+    };
 
-//     reader.readAsDataURL(file);
-//   });
-// };
+    reader.readAsDataURL(file);
+  });
+};
 
 export const getElementValue = (
   e: React.ChangeEvent<HTMLInputElement>,

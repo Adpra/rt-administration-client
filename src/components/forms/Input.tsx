@@ -30,6 +30,7 @@ export interface InputProps {
   onChange?: (e: any) => void;
   isError?: boolean;
   onKeyDown?: (e: any) => void;
+  readOnly?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -46,6 +47,7 @@ const Input = (props: InputProps) => {
     isError,
     color,
     size,
+    readOnly,
   } = props;
 
   const colorClass = styles[!isError ? color ?? "bordered" : "danger"];
@@ -67,6 +69,7 @@ const Input = (props: InputProps) => {
         disabled={disabled}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        readOnly={readOnly}
       />
     </div>
   );

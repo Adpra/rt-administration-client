@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import defaultAxios from "../../utils/DefaultAxios";
+import React from "react";
 import Navbar from "../../layouts/navbars/Navbar";
+import useCurrentUser from "../../utils/CurrentUser";
+import { useNavigate } from "react-router-dom";
+import defaultAxios from "../../utils/DefaultAxios";
+import { renderConfirmationModal, renderToast } from "../../utils/helper";
 import LoadingScreen from "../../components/LoadingScreen";
+import RoleEnum from "../../enums/Role.enum";
+import Button from "../../components/buttons/Button";
 import BaseDropdown from "../../components/forms/BaseDropdown";
 import BaseDropdownItem from "../../components/forms/BaseDropdownItem";
 import { faEye, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../components/Pagination";
-import Button from "../../components/buttons/Button";
-import { useNavigate } from "react-router-dom";
-import useCurrentUser from "../../utils/CurrentUser";
-import { renderConfirmationModal, renderToast } from "../../utils/helper";
-import RoleEnum from "../../enums/Role.enum";
 
-function House() {
+function Billing() {
   const BASE_API = process.env.REACT_APP_BASE_API;
   const [data, setData] = React.useState<any>({});
   const [isLoading, setIsLoading] = React.useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const userData: any = useCurrentUser();
 
   const navigate = useNavigate();
 
-  const fetchHouses = (page: number) => {
+  const fetchBilling = (page: number) => {
     setIsLoading(true);
     defaultAxios
-      .get(`${BASE_API}/api/v1/houses?page=${page}`)
+      .get(`${BASE_API}/api/v1/billings?page=${page}`)
       .then((res) => res.data)
       .then((data) => {
         setData(data);
@@ -33,7 +33,7 @@ function House() {
   };
 
   React.useEffect(() => {
-    fetchHouses(currentPage);
+    fetchBilling(currentPage);
   }, [currentPage, userData]);
 
   const totalPages = data.meta?.last_page || 1;
@@ -56,10 +56,10 @@ function House() {
     }
     setIsLoading(true);
     defaultAxios
-      .delete(`${BASE_API}/api/v1/houses/${id}`)
+      .delete(`${BASE_API}/api/v1/billings/${id}`)
       .then((res) => res.data)
       .then((data) => {
-        fetchHouses(currentPage);
+        fetchBilling(currentPage);
         renderToast("Data berhasil dihapus");
         setIsLoading(false);
       })
@@ -78,11 +78,11 @@ function House() {
         ) : (
           <>
             <div className="flex justify-between">
-              <h1 className="text-3xl font-bold">House</h1>
+              <h1 className="text-3xl font-bold">Billing</h1>
               {userData?.is_admin === RoleEnum.ADMIN && (
                 <Button
-                  text="Add House"
-                  onClick={() => navigate("/admin/add-house")}
+                  text="Add"
+                  onClick={() => navigate("/admin/add-billing")}
                   className={"text-white"}
                 />
               )}
@@ -92,9 +92,11 @@ function House() {
               <thead className="bg-violet-700 text-white">
                 <tr>
                   <th>#</th>
-                  <th>House Number</th>
+                  <th>Type</th>
+                  <th>Amount</th>
                   <th>Description</th>
                   <th>Status</th>
+                  <th>Created At</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -102,38 +104,48 @@ function House() {
                 {data.data.map((item: any, index: number) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.no}</td>
+                    <td>{item.type_name}</td>
+                    <td>{item.amount}</td>
                     <td>{item.description}</td>
                     <td>{item.status_name}</td>
-                    <td>
-                      <BaseDropdown
-                        label="Action"
-                        color="info"
-                        size="sm"
-                        className="text-white"
-                      >
-                        <BaseDropdownItem
-                          label="Detail"
-                          icon={faEye}
+                    <td>{item.created_at}</td>
+                    {userData?.is_admin === RoleEnum.ADMIN && (
+                      <td>
+                        <BaseDropdown
+                          label="Action"
                           color="info"
-                          onClick={() => navigate(`/admin/house/${item.id}`)}
-                        />
-                        <BaseDropdownItem
-                          label="Edit"
-                          icon={faPen}
-                          color="warning"
+                          size="sm"
+                          className="text-white"
+                        >
+                          <BaseDropdownItem
+                            label="Edit"
+                            icon={faPen}
+                            color="warning"
+                            onClick={() =>
+                              navigate(`/admin/edit-billing/${item.id}`)
+                            }
+                          />
+                          <BaseDropdownItem
+                            label="Delete"
+                            icon={faTrash}
+                            color="danger"
+                            onClick={() => onDelete(item.id)}
+                          />
+                        </BaseDropdown>
+                      </td>
+                    )}
+                    {userData?.is_admin === RoleEnum.USER && (
+                      <td>
+                        <Button
+                          text="Bayar"
+                          size="sm"
                           onClick={() =>
-                            navigate(`/admin/edit-house/${item.id}`)
+                            navigate(`/admin/transaction-pay/${item.id}`)
                           }
+                          className={"text-white mx-2"}
                         />
-                        <BaseDropdownItem
-                          label="Delete"
-                          icon={faTrash}
-                          color="danger"
-                          onClick={() => onDelete(item.id)}
-                        />
-                      </BaseDropdown>
-                    </td>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -150,4 +162,4 @@ function House() {
   );
 }
 
-export default House;
+export default Billing;

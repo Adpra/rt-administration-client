@@ -83,7 +83,7 @@ export default function Listbox(props: IProps) {
           <span className="block truncate">
             {props.multiple
               ? selectedOption?.map((person: any) => person.name).join(", ")
-              : selectedOption?.name}
+              : selectedOption?.name || "Select..."}
           </span>
         </HeadlessListbox.Button>
 

@@ -16,15 +16,15 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/" className="btn btn-ghost">
+            <Link to="/admin/house-holders" className="btn btn-ghost">
               Resident
             </Link>
           </li>
           <li>
-            <Link to="/" className="btn btn-ghost">
+            <Link to="/admin/billings" className="btn btn-ghost">
               Billing
             </Link>
-          </li>{" "}
+          </li>
           <li>
             <Link to="/" className="btn btn-ghost">
               Transaction

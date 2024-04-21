@@ -21,7 +21,7 @@ function HouseForm() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({
-    no: null,
+    name: null,
     description: null,
     status: null,
     user_id: null,
@@ -31,7 +31,7 @@ function HouseForm() {
 
   const validationRules = useMemo(
     () => ({
-      no: ["required"],
+      name: ["required"],
       status: ["required"],
     }),
     []
@@ -149,7 +149,7 @@ function HouseForm() {
         <Card className="p-4">
           <header className="relative flex items-center justify-between">
             <div className="text-xl font-bold text-navy-700 dark:text-white">
-              Users
+              House
             </div>
             {/* <CardMenu /> */}
           </header>
@@ -158,12 +158,12 @@ function HouseForm() {
             <form onSubmit={submitData} className="space-y-2">
               <FormInput
                 label="House Name"
-                name="no"
+                name="name"
                 placeholder="A1"
-                value={data.no}
+                value={data.name}
                 onChange={handleChange}
                 required
-                errorMessages={errors.no}
+                errorMessages={errors.name}
               />
               <FormTextarea
                 label="Description"
