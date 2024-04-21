@@ -11,6 +11,9 @@ import HouseHolderForm from "../../views/house-holders/HouseHolderForm";
 import Billing from "../../views/billings/Billing";
 import BillingForm from "../../views/billings/BillingForm";
 import TransactionPay from "../../views/transactions/TransactionPay";
+import TransactionHistory from "../../views/transactions/TransactionHistory";
+import TransactionExpenditure from "../../views/transactions/TransactionExpenditure";
+import useCurrentUser from "../../utils/CurrentUser";
 
 function AdminRoutes() {
   const isAuthenticated = () => {
@@ -37,10 +40,12 @@ function AdminRoutes() {
       {/* Billings */}
       <Route path="/billings" element={<Billing />} />
       <Route path="/add-billing" element={<BillingForm />} />
-      <Route path="/edit-billing/:id" element={<BillingForm />} />
+      {/* <Route path="/edit-billing/:id" element={<BillingForm />} /> */}
 
       {/* Transaction */}
       <Route path="/transaction-pay/:id" element={<TransactionPay />} />
+      <Route path="/transaction-histories" element={<TransactionHistory />} />
+      <Route path="/add-transaction" element={<TransactionExpenditure />} />
 
       {/* ERROR */}
       <Route

@@ -26,18 +26,13 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/" className="btn btn-ghost">
+            <Link to="/admin/transaction-histories" className="btn btn-ghost">
               Transaction
             </Link>
           </li>
           <li>
             <Link to="/" className="btn btn-ghost">
               Finance
-            </Link>
-          </li>
-          <li>
-            <Link to="/" className="btn btn-ghost">
-              User
             </Link>
           </li>
           <li>

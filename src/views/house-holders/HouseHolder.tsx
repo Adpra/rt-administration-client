@@ -28,6 +28,12 @@ function HouseHolder() {
       .then((data) => {
         setData(data);
         setIsLoading(false);
+      })
+      .catch((err) => {
+        navigate(`/errors/${err.response.status}`, {
+          state: { message: err.response.data.message },
+        });
+        setIsLoading(false);
       });
   };
 

@@ -29,6 +29,12 @@ function House() {
       .then((data) => {
         setData(data);
         setIsLoading(false);
+      })
+      .catch((err) => {
+        navigate(`/errors/${err.response.status}`, {
+          state: { message: err.response.data.message },
+        });
+        setIsLoading(false);
       });
   };
 
@@ -126,12 +132,14 @@ function House() {
                             navigate(`/admin/edit-house/${item.id}`)
                           }
                         />
-                        <BaseDropdownItem
-                          label="Delete"
-                          icon={faTrash}
-                          color="danger"
-                          onClick={() => onDelete(item.id)}
-                        />
+                        {userData?.is_admin === RoleEnum.ADMIN && (
+                          <BaseDropdownItem
+                            label="Delete"
+                            icon={faTrash}
+                            color="danger"
+                            onClick={() => onDelete(item.id)}
+                          />
+                        )}
                       </BaseDropdown>
                     </td>
                   </tr>

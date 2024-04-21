@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import defaultAxios from "../../utils/DefaultAxios";
 import LoadingScreen from "../../components/LoadingScreen";
 import Button from "../../components/buttons/Button";
+import { ZoomableImg } from "../../utils/ZoomableImg";
 
 function HouseDetail() {
   const BASE_API = process.env.REACT_APP_BASE_API;
@@ -83,7 +84,11 @@ function HouseDetail() {
                 </div>
                 <div className="my-2">
                   <p>Ktp</p>
-                  <img src={resident.ktp} className="w-1/2" alt="ktp" />
+                  <ZoomableImg
+                    src={
+                      resident.photo_ktp || "/assets/images/user-default.svg"
+                    }
+                  />
                 </div>
               </div>
             ))

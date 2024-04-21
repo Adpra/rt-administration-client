@@ -1,18 +1,18 @@
 import React from "react";
-import Navbar from "../../layouts/navbars/Navbar";
 import useCurrentUser from "../../utils/CurrentUser";
 import { useNavigate } from "react-router-dom";
 import defaultAxios from "../../utils/DefaultAxios";
 import { renderConfirmationModal, renderToast } from "../../utils/helper";
+import Navbar from "../../layouts/navbars/Navbar";
 import LoadingScreen from "../../components/LoadingScreen";
-import RoleEnum from "../../enums/Role.enum";
 import Button from "../../components/buttons/Button";
+import RoleEnum from "../../enums/Role.enum";
 import BaseDropdown from "../../components/forms/BaseDropdown";
 import BaseDropdownItem from "../../components/forms/BaseDropdownItem";
-import { faEye, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../components/Pagination";
 
-function Billing() {
+function TransactionHistory() {
   const BASE_API = process.env.REACT_APP_BASE_API;
   const [data, setData] = React.useState<any>({});
   const [isLoading, setIsLoading] = React.useState(true);
@@ -24,7 +24,7 @@ function Billing() {
   const fetchBilling = (page: number) => {
     setIsLoading(true);
     defaultAxios
-      .get(`${BASE_API}/api/v1/billings?page=${page}`)
+      .get(`${BASE_API}/api/v1/transaction-histories?page=${page}`)
       .then((res) => res.data)
       .then((data) => {
         setData(data);
@@ -54,27 +54,6 @@ function Billing() {
     }
   };
 
-  const onDelete = async (id: number) => {
-    const { isConfirmed } = await renderConfirmationModal();
-
-    if (!isConfirmed) {
-      return;
-    }
-    setIsLoading(true);
-    defaultAxios
-      .delete(`${BASE_API}/api/v1/billings/${id}`)
-      .then((res) => res.data)
-      .then((data) => {
-        fetchBilling(currentPage);
-        renderToast("Data berhasil dihapus");
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
-
   return (
     <>
       <Navbar />
@@ -84,11 +63,11 @@ function Billing() {
         ) : (
           <>
             <div className="flex justify-between">
-              <h1 className="text-3xl font-bold">Billing</h1>
+              <h1 className="text-3xl font-bold">Transaction History</h1>
               {userData?.is_admin === RoleEnum.ADMIN && (
                 <Button
-                  text="Add"
-                  onClick={() => navigate("/admin/add-billing")}
+                  text="Pengeluaran"
+                  onClick={() => navigate("/admin/add-transaction")}
                   className={"text-white"}
                 />
               )}
@@ -102,8 +81,11 @@ function Billing() {
                   <th>Amount</th>
                   <th>Description</th>
                   <th>Status</th>
+                  <th>Type Payment</th>
+                  <th>House</th>
+                  <th>Created By</th>
                   <th>Created At</th>
-                  <th>Action</th>
+                  <th>Payment Retrun Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,36 +96,11 @@ function Billing() {
                     <td>{item.amount}</td>
                     <td>{item.description}</td>
                     <td>{item.status_name}</td>
+                    <td>{item.billing}</td>
+                    <td>{item.house}</td>
+                    <td>{item.householder}</td>
                     <td>{item.created_at}</td>
-                    {userData?.is_admin === RoleEnum.ADMIN && (
-                      <td>
-                        <BaseDropdown
-                          label="Action"
-                          color="info"
-                          size="sm"
-                          className="text-white"
-                        >
-                          <BaseDropdownItem
-                            label="Delete"
-                            icon={faTrash}
-                            color="danger"
-                            onClick={() => onDelete(item.id)}
-                          />
-                        </BaseDropdown>
-                      </td>
-                    )}
-                    {userData?.is_admin === RoleEnum.USER && (
-                      <td>
-                        <Button
-                          text="Bayar"
-                          size="sm"
-                          onClick={() =>
-                            navigate(`/admin/transaction-pay/${item.id}`)
-                          }
-                          className={"text-white mx-2"}
-                        />
-                      </td>
-                    )}
+                    <td>{item.payment_return_date}</td>
                   </tr>
                 ))}
               </tbody>
@@ -160,4 +117,4 @@ function Billing() {
   );
 }
 
-export default Billing;
+export default TransactionHistory;
