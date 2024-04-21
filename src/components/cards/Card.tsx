@@ -9,7 +9,7 @@ function Card(props: {
   const { variant, className, children, ...rest } = props;
   return (
     <div
-      className={twMerge(className, "card w-96 bg-base-100 shadow-xl")}
+      className={twMerge(className, "card bg-base-100 shadow-xl")}
       {...rest}
     >
       {children}

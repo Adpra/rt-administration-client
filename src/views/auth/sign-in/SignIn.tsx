@@ -4,7 +4,7 @@ import Card from "../../../components/cards/Card";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../../layouts/navbars/Navbar";
 import FormInput from "../../../components/forms/FormInput";
-import { validateData } from "../../../utils/helper";
+import { renderToast, validateData } from "../../../utils/helper";
 import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingScreen from "../../../components/LoadingScreen";
@@ -71,16 +71,7 @@ function SignIn() {
         setIsLoading(false);
       })
       .catch((error) => {
-        Swal.fire({
-          position: "top",
-          icon: "error",
-          title: "Error. .",
-          text: error.response.data.message,
-          toast: true,
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-        });
+        renderToast(error.response.data.message);
 
         setIsLoading(false);
       });
@@ -91,7 +82,7 @@ function SignIn() {
       {isLoading && <LoadingScreen />}
       <Navbar />
       <div className="flex h-screen flex-col items-center justify-center">
-        <Card className="p-6">
+        <Card className="p-6 w-96">
           <h1 className="mb-5 text-3xl font-bold">Sign in</h1>,
           <form onSubmit={submitData} className="space-y-2">
             <FormInput

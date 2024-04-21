@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface TextAreaProps {
+export interface TextAreaProps {
   placeholder?: string;
   size?: "xs" | "sm" | "md" | "lg";
   color?:
@@ -18,8 +18,10 @@ interface TextAreaProps {
   disabled?: boolean;
   id?: string;
   name: string;
-  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown?: (e: any) => void;
+  isError?: boolean;
+  value?: any;
+  onChange?: (e: any) => void;
 }
 
 const DEFAULT_SIZE = "sm";
@@ -36,6 +38,7 @@ const TextArea = (props: TextAreaProps) => {
     disabled,
     onChange,
     onKeyDown,
+    value,
   } = props;
 
   const sizeClass = styles[size ?? DEFAULT_SIZE];
@@ -50,6 +53,7 @@ const TextArea = (props: TextAreaProps) => {
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
+        value={value}
       ></textarea>
     </div>
   );

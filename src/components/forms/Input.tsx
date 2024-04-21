@@ -2,7 +2,7 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface InputProps {
-  id: string;
+  id?: string;
   name: string;
   type?:
     | "text"

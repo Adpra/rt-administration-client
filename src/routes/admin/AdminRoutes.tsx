@@ -3,6 +3,9 @@ import React from "react";
 import Home from "../../views/Home";
 import Page from "../../views/Page";
 import Error from "../../pages/errors/Error";
+import House from "../../views/house/House";
+import HouseForm from "../../views/house/HouseForm";
+import HouseDetail from "../../views/house/HouseDetail";
 
 function AdminRoutes() {
   const isAuthenticated = () => {
@@ -14,6 +17,12 @@ function AdminRoutes() {
     <Routes>
       <Route path="/home" element={<Home />} />
       <Route path="/page" element={<Page />} />
+
+      {/* HOUSE  */}
+      <Route path="/house" element={<House />} />
+      <Route path="/add-house" element={<HouseForm />} />
+      <Route path="/edit-house/:id" element={<HouseForm />} />
+      <Route path="/house/:id" element={<HouseDetail />} />
 
       {/* ERROR */}
       <Route

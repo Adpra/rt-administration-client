@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import Card from "../../../components/cards/Card";
 import Navbar from "../../../layouts/navbars/Navbar";
 import FormInput from "../../../components/forms/FormInput";
-import { validateData } from "../../../utils/helper";
+import { renderToast, validateData } from "../../../utils/helper";
 import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingScreen from "../../../components/LoadingScreen";
 
 interface IProps {
-  username: string;
+  name: string;
   email: string;
   password: string;
   password_confirmation: string;
@@ -19,7 +19,7 @@ interface IProps {
 function SignUp() {
   const BASE_API = process.env.REACT_APP_BASE_API;
   const [data, setData] = React.useState<IProps>({
-    username: "",
+    name: "",
     email: "",
     password: "",
     password_confirmation: "",
@@ -31,7 +31,7 @@ function SignUp() {
 
   const validationRules = useMemo(
     () => ({
-      username: ["required"],
+      name: ["required"],
       email: ["required", "email"],
       password: ["required"],
       password_confirmation: ["required", "same:password"],
@@ -72,17 +72,8 @@ function SignUp() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log("error: ", error);
-        Swal.fire({
-          position: "top",
-          icon: "error",
-          title: "Error. .",
-          text: error.response.data.message,
-          toast: true,
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-        });
+        renderToast(error.response.data.message);
+
         setIsLoading(false);
       });
   };
@@ -91,17 +82,17 @@ function SignUp() {
       {isLoading && <LoadingScreen />}
       <Navbar />
       <div className="flex h-screen flex-col items-center justify-center">
-        <Card className="p-6">
+        <Card className="p-6 w-96">
           <form onSubmit={submitData} className="space-y-2">
             <h1 className="mb-5 text-3xl font-bold">Sign Up</h1>,
             <FormInput
-              id="username"
-              name="username"
-              label="Username"
-              placeholder="Username"
+              id="name"
+              name="name"
+              label="name"
+              placeholder="name"
               required={true}
               onChange={handelChange}
-              errorMessages={errors.username}
+              errorMessages={errors.name}
             />
             <FormInput
               id="email"
