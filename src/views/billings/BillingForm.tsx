@@ -168,7 +168,7 @@ function BillingForm() {
                 label="Description"
                 name="description"
                 value={data.description}
-                placeholder="Describe your house"
+                placeholder="Describe your bill"
                 onChange={handleChange}
                 errorMessages={errors.description}
               />

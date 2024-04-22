@@ -105,45 +105,51 @@ function House() {
                 </tr>
               </thead>
               <tbody>
-                {data.data.map((item: any, index: number) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td>{item.status_name}</td>
-                    <td>
-                      <BaseDropdown
-                        label="Action"
-                        color="info"
-                        size="sm"
-                        className="text-white"
-                      >
-                        <BaseDropdownItem
-                          label="Detail"
-                          icon={faEye}
-                          color="info"
-                          onClick={() => navigate(`/admin/house/${item.id}`)}
-                        />
-                        <BaseDropdownItem
-                          label="Edit"
-                          icon={faPen}
-                          color="warning"
-                          onClick={() =>
-                            navigate(`/admin/edit-house/${item.id}`)
-                          }
-                        />
-                        {userData?.is_admin === RoleEnum.ADMIN && (
-                          <BaseDropdownItem
-                            label="Delete"
-                            icon={faTrash}
-                            color="danger"
-                            onClick={() => onDelete(item.id)}
-                          />
-                        )}
-                      </BaseDropdown>
-                    </td>
+                {!data.data || data.data.length === 0 ? (
+                  <tr>
+                    <td colSpan={5}>Data Empty</td>
                   </tr>
-                ))}
+                ) : (
+                  data.data.map((item: any, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item.name}</td>
+                      <td>{item.description}</td>
+                      <td>{item.status_name}</td>
+                      <td>
+                        <BaseDropdown
+                          label="Action"
+                          color="info"
+                          size="sm"
+                          className="text-white"
+                        >
+                          <BaseDropdownItem
+                            label="Detail"
+                            icon={faEye}
+                            color="info"
+                            onClick={() => navigate(`/admin/house/${item.id}`)}
+                          />
+                          <BaseDropdownItem
+                            label="Edit"
+                            icon={faPen}
+                            color="warning"
+                            onClick={() =>
+                              navigate(`/admin/edit-house/${item.id}`)
+                            }
+                          />
+                          {userData?.is_admin === RoleEnum.ADMIN && (
+                            <BaseDropdownItem
+                              label="Delete"
+                              icon={faTrash}
+                              color="danger"
+                              onClick={() => onDelete(item.id)}
+                            />
+                          )}
+                        </BaseDropdown>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
             {/* Pagination */}

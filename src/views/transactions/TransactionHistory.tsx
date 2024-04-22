@@ -18,13 +18,21 @@ function TransactionHistory() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
   const userData: any = useCurrentUser();
+  const [filterType, setFilterType] = React.useState<number | "">("");
+  const [mapFilter, setMapFilter] = React.useState<any[]>([]);
 
   const navigate = useNavigate();
 
   const fetchBilling = (page: number) => {
     setIsLoading(true);
+
+    let url = `${BASE_API}/api/v1/transaction-histories?page=${page}`;
+
+    if (filterType !== "") {
+      url += `&filter_type=${filterType}`;
+    }
     defaultAxios
-      .get(`${BASE_API}/api/v1/transaction-histories?page=${page}`)
+      .get(url)
       .then((res) => res.data)
       .then((data) => {
         setData(data);
@@ -38,9 +46,51 @@ function TransactionHistory() {
       });
   };
 
+  const fetchData = async () => {
+    let expenseData = [];
+    let transactionData = [];
+
+    if (userData?.is_admin === RoleEnum.ADMIN) {
+      try {
+        const expenseResponse = await defaultAxios.get(
+          `${BASE_API}/api/v1/enums`,
+          {
+            params: {
+              type: "expense_type",
+            },
+          }
+        );
+        expenseData = expenseResponse.data.data;
+      } catch (error) {
+        console.error("Error fetching expense types:", error);
+      }
+    }
+
+    try {
+      const transactionResponse = await defaultAxios.get(
+        `${BASE_API}/api/v1/enums`,
+        {
+          params: {
+            type: "type_transaction",
+          },
+        }
+      );
+      transactionData = transactionResponse.data.data;
+    } catch (error) {
+      console.error("Error fetching transaction types:", error);
+    }
+
+    const combinedData = [...expenseData, ...transactionData];
+
+    setMapFilter(combinedData);
+  };
+
+  console.log(mapFilter);
+
   React.useEffect(() => {
+    fetchData();
     fetchBilling(currentPage);
-  }, [currentPage, userData]);
+  }, [currentPage, userData, filterType]);
 
   const totalPages = data.meta?.last_page || 1;
 
@@ -52,6 +102,10 @@ function TransactionHistory() {
     } else if (typeof page === "number") {
       setCurrentPage(page);
     }
+  };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilterType(parseInt(event.target.value));
   };
 
   return (
@@ -73,6 +127,24 @@ function TransactionHistory() {
               )}
             </div>
 
+            {/* Filter */}
+            <div className="my-3">
+              <select
+                className="select w-full max-w-xs select-primary select-sm"
+                id="monthFilter"
+                name="monthFilter"
+                onChange={handleFilterChange}
+                value={filterType}
+              >
+                <option value="0">All</option>
+                {mapFilter.map((filter: any, index: number) => (
+                  <option key={index} value={filter.id}>
+                    {filter.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <table className="table my-5">
               <thead className="bg-violet-700 text-white">
                 <tr>
@@ -89,20 +161,28 @@ function TransactionHistory() {
                 </tr>
               </thead>
               <tbody>
-                {data.data.map((item: any, index: number) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.type_name}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.description}</td>
-                    <td>{item.status_name}</td>
-                    <td>{item.billing}</td>
-                    <td>{item.house}</td>
-                    <td>{item.householder}</td>
-                    <td>{item.created_at}</td>
-                    <td>{item.payment_return_date}</td>
+                {data.data.length === 0 ? (
+                  <tr>
+                    <td colSpan={10} className="text-center">
+                      Data Empty
+                    </td>
                   </tr>
-                ))}
+                ) : (
+                  data.data.map((item: any, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item.type_name}</td>
+                      <td>{item.amount}</td>
+                      <td>{item.description}</td>
+                      <td>{item.status_name}</td>
+                      <td>{item.billing}</td>
+                      <td>{item.house}</td>
+                      <td>{item.householder}</td>
+                      <td>{item.created_at}</td>
+                      <td>{item.payment_return_date}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
             {/* Pagination */}

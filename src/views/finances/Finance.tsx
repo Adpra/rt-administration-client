@@ -14,10 +14,17 @@ interface MonthlySummary {
   expense: number;
   current_balance: number;
 }
+interface ApiResponse {
+  monthly_summary: MonthlySummary[];
+  total_balance: number;
+}
 
 function Finance() {
   const BASE_API = process.env.REACT_APP_BASE_API;
-  const [data, setData] = useState<MonthlySummary[]>([]);
+  const [data, setData] = useState<ApiResponse>({
+    monthly_summary: [],
+    total_balance: 0,
+  });
   const [dataTable, setDataTable] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterMonth, setFilterMonth] = useState<number | "">("");
@@ -48,7 +55,7 @@ function Finance() {
       .get(`${BASE_API}/api/v1/financial-report-summaries`)
       .then((res) => res.data)
       .then((data) => {
-        setData(data.monthly_summary);
+        setData(data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -88,20 +95,22 @@ function Finance() {
   }, []);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data && data.monthly_summary && data.monthly_summary.length > 0) {
       renderChart();
     }
   }, [data]);
+
+  console.log(data);
 
   useEffect(() => {
     fetchFinance(currentPage);
   }, [currentPage, filterMonth]);
 
   const renderChart = () => {
-    const months = data.map((entry) => entry.month);
-    const incomes = data.map((entry) => entry.income);
-    const expenses = data.map((entry) => entry.expense);
-    const balances = data.map((entry) => entry.current_balance);
+    const months = data.monthly_summary.map((entry) => entry.month);
+    const incomes = data.monthly_summary.map((entry) => entry.income);
+    const expenses = data.monthly_summary.map((entry) => entry.expense);
+    const balances = data.monthly_summary.map((entry) => entry.current_balance);
 
     if (chartRef.current) {
       chartRef.current.destroy();
@@ -170,6 +179,9 @@ function Finance() {
       <Navbar />
       <Card className="w-full">
         <h1 className="text-3xl font-bold text-center my-5">Report Payment</h1>
+        <h1 className="text-1xl font-bold text-center my-5">
+          Kas saat ini: {data.total_balance}
+        </h1>
         <div className="w-1/2 mx-auto my-5">
           <canvas id="financeChart" width={4} height={2}></canvas>
         </div>
@@ -219,7 +231,13 @@ function Finance() {
                   </tr>
                 </thead>
                 <tbody>
-                  {dataTable.data &&
+                  {!dataTable.data || dataTable.data.length === 0 ? (
+                    <tr>
+                      <td colSpan={10} className="text-center">
+                        Data Empty
+                      </td>
+                    </tr>
+                  ) : (
                     dataTable.data.map((item: any, index: number) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -233,7 +251,8 @@ function Finance() {
                         <td>{item.created_at}</td>
                         <td>{item.payment_return_date}</td>
                       </tr>
-                    ))}
+                    ))
+                  )}
                 </tbody>
               </table>
               {/* Pagination */}

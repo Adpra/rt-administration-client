@@ -173,7 +173,6 @@ function HouseHolderForm() {
         setIsLoading(false);
       });
   };
-  console.log(data);
 
   return (
     <>
@@ -227,7 +226,6 @@ function HouseHolderForm() {
                 onChange={handleChange}
                 required
                 errorMessages={errors.phone}
-                type="number"
               />
               <FormListbox
                 label="Status"

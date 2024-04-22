@@ -11,19 +11,21 @@ import { useNavigate } from "react-router-dom";
 import defaultAxios from "../../utils/DefaultAxios";
 import { renderConfirmationModal, renderToast } from "../../utils/helper";
 import { ZoomableImg } from "../../utils/ZoomableImg";
+import FormInput from "../../components/forms/FormInput";
 
 function HouseHolder() {
   const BASE_API = process.env.REACT_APP_BASE_API;
   const [data, setData] = React.useState<any>({});
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
   const userData: any = useCurrentUser();
   const navigate = useNavigate();
 
-  const fetchHouseHolders = (page: number) => {
+  const fetchHouseHolders = (page: number, search: string) => {
     setIsLoading(true);
     defaultAxios
-      .get(`${BASE_API}/api/v1/householders?page=${page}`)
+      .get(`${BASE_API}/api/v1/householders?page=${page}&search=${search}`)
       .then((res) => res.data)
       .then((data) => {
         setData(data);
@@ -38,7 +40,7 @@ function HouseHolder() {
   };
 
   React.useEffect(() => {
-    fetchHouseHolders(currentPage);
+    fetchHouseHolders(currentPage, searchValue);
   }, [currentPage, userData]);
 
   const totalPages = data.meta?.last_page || 1;
@@ -64,7 +66,7 @@ function HouseHolder() {
       .delete(`${BASE_API}/api/v1/householders/${id}`)
       .then((res) => res.data)
       .then((data) => {
-        fetchHouseHolders(currentPage);
+        fetchHouseHolders(currentPage, searchValue);
         renderToast("Data berhasil dihapus");
         setIsLoading(false);
       })
@@ -72,6 +74,10 @@ function HouseHolder() {
         console.log(err);
         setIsLoading(false);
       });
+  };
+
+  const handleSearch = () => {
+    fetchHouseHolders(currentPage, searchValue);
   };
 
   return (
@@ -91,6 +97,18 @@ function HouseHolder() {
               />
             </div>
 
+            <div className="w-1/4 flex justify-center items-center gap-2 my-5">
+              <FormInput
+                id="search"
+                name="search"
+                size="sm"
+                placeholder="Search by name"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <Button text="Search" onClick={handleSearch} />
+            </div>
+
             <table className="table my-5">
               <thead className="bg-violet-700 text-white">
                 <tr>
@@ -105,53 +123,52 @@ function HouseHolder() {
                 </tr>
               </thead>
               <tbody>
-                {data.data.map((item: any, index: number) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.name}</td>
-                    <td>
-                      <ZoomableImg
-                        src={
-                          item.photo_ktp || "/assets/images/user-default.svg"
-                        }
-                      />
-                    </td>
-
-                    <td>{item.status_name}</td>
-                    <td>{item.marital_status}</td>
-                    <td>{item.phone}</td>
-                    <td>{item.house_name}</td>
-                    <td>
-                      <BaseDropdown
-                        label="Action"
-                        color="info"
-                        size="sm"
-                        className="text-white"
-                      >
-                        {/* <BaseDropdownItem
-                          label="Detail"
-                          icon={faEye}
-                          color="info"
-                          onClick={() => navigate(`/admin/house/${item.id}`)}
-                        /> */}
-                        <BaseDropdownItem
-                          label="Edit"
-                          icon={faPen}
-                          color="warning"
-                          onClick={() =>
-                            navigate(`/admin/edit-house-holder/${item.id}`)
+                {!data.data || data.data.length === 0 ? (
+                  <tr>
+                    <td colSpan={8}>Data Empty</td>
+                  </tr>
+                ) : (
+                  data.data.map((item: any, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item.name}</td>
+                      <td>
+                        <ZoomableImg
+                          src={
+                            item.photo_ktp || "/assets/images/user-default.svg"
                           }
                         />
-                        <BaseDropdownItem
-                          label="Delete"
-                          icon={faTrash}
-                          color="danger"
-                          onClick={() => onDelete(item.id)}
-                        />
-                      </BaseDropdown>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>{item.status_name}</td>
+                      <td>{item.marital_status}</td>
+                      <td>{item.phone}</td>
+                      <td>{item.house_name}</td>
+                      <td>
+                        <BaseDropdown
+                          label="Action"
+                          color="info"
+                          size="sm"
+                          className="text-white"
+                        >
+                          <BaseDropdownItem
+                            label="Edit"
+                            icon={faPen}
+                            color="warning"
+                            onClick={() =>
+                              navigate(`/admin/edit-house-holder/${item.id}`)
+                            }
+                          />
+                          <BaseDropdownItem
+                            label="Delete"
+                            icon={faTrash}
+                            color="danger"
+                            onClick={() => onDelete(item.id)}
+                          />
+                        </BaseDropdown>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
             {/* Pagination */}

@@ -107,45 +107,51 @@ function Billing() {
                 </tr>
               </thead>
               <tbody>
-                {data.data.map((item: any, index: number) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.type_name}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.description}</td>
-                    <td>{item.status_name}</td>
-                    <td>{item.created_at}</td>
-                    {userData?.is_admin === RoleEnum.ADMIN && (
-                      <td>
-                        <BaseDropdown
-                          label="Action"
-                          color="info"
-                          size="sm"
-                          className="text-white"
-                        >
-                          <BaseDropdownItem
-                            label="Delete"
-                            icon={faTrash}
-                            color="danger"
-                            onClick={() => onDelete(item.id)}
-                          />
-                        </BaseDropdown>
-                      </td>
-                    )}
-                    {userData?.is_admin === RoleEnum.USER && (
-                      <td>
-                        <Button
-                          text="Bayar"
-                          size="sm"
-                          onClick={() =>
-                            navigate(`/admin/transaction-pay/${item.id}`)
-                          }
-                          className={"text-white mx-2"}
-                        />
-                      </td>
-                    )}
+                {!data.data || data.data.length === 0 ? (
+                  <tr>
+                    <td colSpan={7}>Data Empty</td>
                   </tr>
-                ))}
+                ) : (
+                  data.data.map((item: any, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item.type_name}</td>
+                      <td>{item.amount}</td>
+                      <td>{item.description}</td>
+                      <td>{item.status_name}</td>
+                      <td>{item.created_at}</td>
+                      {userData?.is_admin === RoleEnum.ADMIN && (
+                        <td>
+                          <BaseDropdown
+                            label="Action"
+                            color="info"
+                            size="sm"
+                            className="text-white"
+                          >
+                            <BaseDropdownItem
+                              label="Delete"
+                              icon={faTrash}
+                              color="danger"
+                              onClick={() => onDelete(item.id)}
+                            />
+                          </BaseDropdown>
+                        </td>
+                      )}
+                      {userData?.is_admin === RoleEnum.USER && (
+                        <td>
+                          <Button
+                            text="Bayar"
+                            size="sm"
+                            onClick={() =>
+                              navigate(`/admin/transaction-pay/${item.id}`)
+                            }
+                            className={"text-white mx-2"}
+                          />
+                        </td>
+                      )}
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
             {/* Pagination */}
