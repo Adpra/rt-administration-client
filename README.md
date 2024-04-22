@@ -1,6 +1,6 @@
 ## How to install
 
-**Use Node Verson 20**
+**Use Node Version 20**
 
 - Set `.env` like `.env.example`
 - Run `yarn install`
