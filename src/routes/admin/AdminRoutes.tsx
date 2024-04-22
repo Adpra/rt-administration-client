@@ -1,7 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import React from "react";
-import Home from "../../views/Home";
-import Page from "../../views/Page";
 import Error from "../../pages/errors/Error";
 import House from "../../views/houses/House";
 import HouseForm from "../../views/houses/HouseForm";
@@ -14,6 +12,7 @@ import TransactionPay from "../../views/transactions/TransactionPay";
 import TransactionHistory from "../../views/transactions/TransactionHistory";
 import TransactionExpenditure from "../../views/transactions/TransactionExpenditure";
 import useCurrentUser from "../../utils/CurrentUser";
+import Finance from "../../views/finances/Finance";
 
 function AdminRoutes() {
   const isAuthenticated = () => {
@@ -23,9 +22,6 @@ function AdminRoutes() {
 
   return isAuthenticated() ? (
     <Routes>
-      <Route path="/home" element={<Home />} />
-      <Route path="/page" element={<Page />} />
-
       {/* HOUSE  */}
       <Route path="/house" element={<House />} />
       <Route path="/add-house" element={<HouseForm />} />
@@ -46,6 +42,9 @@ function AdminRoutes() {
       <Route path="/transaction-pay/:id" element={<TransactionPay />} />
       <Route path="/transaction-histories" element={<TransactionHistory />} />
       <Route path="/add-transaction" element={<TransactionExpenditure />} />
+
+      {/* Finance */}
+      <Route path="/finances" element={<Finance />} />
 
       {/* ERROR */}
       <Route

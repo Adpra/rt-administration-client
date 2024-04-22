@@ -65,7 +65,7 @@ function SignIn() {
       .then((res) => res.data)
       .then((data) => {
         localStorage.setItem("access_token", data.access_token);
-        window.location.href = "/admin/home";
+        window.location.href = "/admin/house";
         // navigate("/home");
 
         setIsLoading(false);

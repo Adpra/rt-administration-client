@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <nav className="navbar bg-base-700 shadow-sm">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost normal-case text-xl">
+        <Link to="/finance" className="btn btn-ghost normal-case text-xl">
           Home
         </Link>
       </div>
@@ -31,7 +31,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/" className="btn btn-ghost">
+            <Link to="/admin/finances" className="btn btn-ghost">
               Finance
             </Link>
           </li>

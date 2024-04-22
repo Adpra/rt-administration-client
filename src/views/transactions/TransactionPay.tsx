@@ -159,7 +159,7 @@ function TransactionPay() {
       <Navbar />
       <div className="flex h-screen flex-col items-center justify-center">
         <Card className="p-6 w-96">
-          <h1 className="mb-5 text-3xl font-bold">Pay</h1>,
+          <h1 className="mb-5 text-3xl font-bold">Pay bills</h1>,
           <form onSubmit={submitData} className="space-y-2">
             <FormInput
               name="type"
