@@ -124,7 +124,12 @@ function SignUp() {
               errorMessages={errors.password_confirmation}
               type="password"
             />
-            <Button text="Sign up" className="w-full" type="submit" />
+            <Button
+              text="Sign up"
+              className="w-full text-white"
+              type="submit"
+              color="secondary"
+            />
             <div className="space-x-1 my-1">
               <span className="space-x-1 text-sm">
                 Already have an account?

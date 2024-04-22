@@ -90,12 +90,13 @@ function Billing() {
                   text="Add"
                   onClick={() => navigate("/admin/add-billing")}
                   className={"text-white"}
+                  color="secondary"
                 />
               )}
             </div>
 
             <table className="table my-5">
-              <thead className="bg-violet-700 text-white">
+              <thead className="bg-slate-700 text-white">
                 <tr>
                   <th>#</th>
                   <th>Type</th>
@@ -124,7 +125,7 @@ function Billing() {
                         <td>
                           <BaseDropdown
                             label="Action"
-                            color="info"
+                            color="secondary"
                             size="sm"
                             className="text-white"
                           >

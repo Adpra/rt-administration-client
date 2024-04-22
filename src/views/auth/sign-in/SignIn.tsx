@@ -105,7 +105,12 @@ function SignIn() {
               onChange={handelChange}
               errorMessages={errors.password}
             />
-            <Button text="Sign in" className="w-full" type="submit" />
+            <Button
+              text="Sign in"
+              className="w-full text-white"
+              type="submit"
+              color="secondary"
+            />
           </form>
           <div className="space-x-1 my-1">
             <span className="space-x-1 text-sm">

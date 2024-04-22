@@ -94,6 +94,7 @@ function HouseHolder() {
                 text="Add"
                 onClick={() => navigate("/admin/add-house-holder")}
                 className={"text-white"}
+                color="secondary"
               />
             </div>
 
@@ -106,11 +107,11 @@ function HouseHolder() {
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
               />
-              <Button text="Search" onClick={handleSearch} />
+              <Button text="Search" onClick={handleSearch} color="secondary" />
             </div>
 
             <table className="table my-5">
-              <thead className="bg-violet-700 text-white">
+              <thead className="bg-slate-700 text-white">
                 <tr>
                   <th>#</th>
                   <th>Name</th>
@@ -146,7 +147,7 @@ function HouseHolder() {
                       <td>
                         <BaseDropdown
                           label="Action"
-                          color="info"
+                          color="secondary"
                           size="sm"
                           className="text-white"
                         >

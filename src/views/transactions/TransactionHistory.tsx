@@ -123,6 +123,7 @@ function TransactionHistory() {
                   text="Pengeluaran"
                   onClick={() => navigate("/admin/add-transaction")}
                   className={"text-white"}
+                  color="secondary"
                 />
               )}
             </div>
@@ -146,7 +147,7 @@ function TransactionHistory() {
             </div>
 
             <table className="table my-5">
-              <thead className="bg-violet-700 text-white">
+              <thead className="bg-slate-700 text-white">
                 <tr>
                   <th>#</th>
                   <th>Type</th>
