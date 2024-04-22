@@ -110,7 +110,9 @@ function Billing() {
               <tbody>
                 {!data.data || data.data.length === 0 ? (
                   <tr>
-                    <td colSpan={7}>Data Empty</td>
+                    <td colSpan={7} className="text-center">
+                      Data Empty
+                    </td>
                   </tr>
                 ) : (
                   data.data.map((item: any, index: number) => (

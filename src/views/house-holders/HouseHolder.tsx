@@ -126,7 +126,9 @@ function HouseHolder() {
               <tbody>
                 {!data.data || data.data.length === 0 ? (
                   <tr>
-                    <td colSpan={8}>Data Empty</td>
+                    <td colSpan={8} className="text-center">
+                      Data Empty
+                    </td>
                   </tr>
                 ) : (
                   data.data.map((item: any, index: number) => (
